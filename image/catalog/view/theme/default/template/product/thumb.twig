@@ -1,0 +1,11 @@
+<article class="card gallery__card">
+    <div class="card-img-top card__image">
+      <img src="{{ thumb }}" class="card__thumb {% if thumb_after %}w-50{% endif %}" alt="{{ name }} - {{ team }} | До" />
+      {% if thumb_after %}<img src="{{ thumb_after }}" class="card__thumb" alt="{{ name }} - {{ team }} | После" />{% endif %}
+    </div>
+    <div class="card-body">
+      <h5 class="card__title card-title">{{ name }}</h5>
+      <p class="card__team">{{ team }}</p>
+    </div>
+</article>
+  

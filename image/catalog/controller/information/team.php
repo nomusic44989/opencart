@@ -201,19 +201,21 @@ class ControllerInformationTeam extends Controller {
 		foreach ($results as $result) {
 			$gallery = [];
 			
-			if ($result['image']) {
-				$image = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
-			} else {
+			if(!empty($result['image']) &&  !empty($result['image_after'])){
+				$image = $this->model_tool_image->resize($result['image'], 300, 518);
+			} else if ($result['image']) {
+				$image = $this->model_tool_image->resizeMerge($result['image'], 400, 400);
+			}else{
 				$image = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
 			}
 			
 			if ($result['image_after']) {
-				$image_after = $this->model_tool_image->resize($result['image_after'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
+				$image_after = $this->model_tool_image->resize($result['image_after'], 300, 518);
 			} else {
 				$image_after = '';
 			}
 			
-			$gallery[] = [
+			$gallery = [
 				'gallery_id'	=> $result['gallery_id'],
 				'name'			=> $result['name'],
 				'description'	=> html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'),
@@ -221,9 +223,11 @@ class ControllerInformationTeam extends Controller {
 				'image_after'	=> !empty($result['image_after']) ? $this->model_tool_image->link($result['image_after']) : '',
 				'thumb'			=> $image,
 				'thumb_after'	=> $image_after,
+				'team'			=> $result['team']
 			];
-			$data['gallerys'][] = $this->load->view('product/gallery_list');			
+			$data['gallerys'][] = $this->load->view('product/thumb', $gallery);			
 		}
+		
 		
 		return $this->load->view('product/gallery_list', $data);
 	}

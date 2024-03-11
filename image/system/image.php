@@ -155,28 +155,26 @@ class Image {
 			$y = (int)(($height - $this->height) / 2);
 
 			$image->compositeImage($this->image, Imagick::COMPOSITE_OVER, $x, $y);
-
 			
 
-			if($default == 'merge'){
+			if($default == 'merge' && $x != null){
 				$crop = $image;
 				
 				$image_left = clone $image;
-				$image_left->cropImage($x + 1, $height, $x, $y);
+				$image_left->cropImage($x, $height, $x, $y);
 				$image_left->blurImage(0,9);
 				$image_left->setImageType(Imagick::IMGTYPE_GRAYSCALE);
 				
 				$image_right = clone $image;
-				$image_right->cropImage($x, $height, $width - ($x * 2), $y);
+				$image_right->cropImage($x + 1, $height, $width - ($x * 2), $y);
 				$image_right->blurImage(0,9);
 				$image_right->setImageType(Imagick::IMGTYPE_GRAYSCALE);
 				
 				$image->compositeImage($image_left, Imagick::COMPOSITE_OVER, 0, 0);
 				$image->compositeImage($image_right, Imagick::COMPOSITE_OVER, $width - $x - 1, 0);
-				$this->image = $image;
-			}
-			
-			$this->image = $image;	
+				
+			}	
+			$this->image = $image;
 
 			$this->width = $this->image->getImageWidth();
 			$this->height = $this->image->getImageHeight();
