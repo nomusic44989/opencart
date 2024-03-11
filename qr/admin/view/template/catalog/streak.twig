@@ -1,0 +1,514 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<h1>{{ heading_title }}</h1>
+			<ol class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ol>
+		</div>
+	</div>
+	<div class="container-fluid">
+	  <div class="row mb-3">
+	    <div class="col-sm-12">
+		  <div class="card">
+		    <div class="card-header"><i class="fas fa-filter"></i> {{ text_filter }} <button type="button" onclick="$('select').prop('selectedIndex',0);$('input').val('');" data-bs-toggle="tooltip" title="{{ button_clear }}" class="btn btn-sm btn-warning" style="float: right; margin: 0;"><i class="fas fa-eraser"></i></div>
+			<div id="filter-product" class="card-body">
+			  <div class="row">
+			    <div class="col-sm-3">
+					<div class="mb-3">
+					  <label class="form-label" for="input-product-id">Product ID</label>
+					  <input type="text" name="filter_product_id" value="{{ filter_product_id }}" placeholder="Product ID" id="input-product-id" class="form-control" />
+					</div>
+					<div class="mb-3">
+					  <label for="input-name" class="form-label">{{ entry_name }}</label>
+					  <input type="text" name="filter_name" value="{{ filter_name }}" placeholder="{{ entry_name }}" id="input-name" list="list-name" class="form-control"/>
+					  <datalist id="list-name"></datalist>
+					</div>
+				</div>				
+				<div class="col-sm-3">
+					<div class="mb-3">
+					  <label for="input-name" class="form-label">{{ entry_sku }}</label>
+					  <input type="text" name="filter_sku" value="{{ filter_sku }}" placeholder="{{ entry_sku }}" id="input-sku" class="form-control"/>
+					  <datalist id="list-name"></datalist>
+					</div>
+					<div class="mb-3">
+					  <label for="input-name" class="form-label">{{ entry_mpn }}</label>
+					  <input type="text" name="filter_mpn" value="{{ filter_mpn }}" placeholder="{{ entry_mpn }}" id="input-mpn" class="form-control"/>
+					</div>
+					<div class="mb-3">
+					  <label for="input-show" class="form-label">{{ entry_show }}</label>
+					  <select name="filter_show" id="input-show" class="form-select">
+						<option value="">{{ text_default }}</option>						  
+						<option value="sku" {% if filter_show == 'sku' %}selected="selected"{% endif %}>{{ text_select_sku }}</option>
+						<option value="mpn" {% if filter_show == 'mpn' %}selected="selected"{% endif %}>{{ text_select_mpn }}</option>  
+					  </select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+				    <div class="widget widget-filter mb-3 pb-1 border-bottom">
+					  <h3 class="widget-title">{{ entry_category }}</h3>
+					  <div class="input-group input-group-sm mb-2">
+						<input class="widget-filter-search form-control rounded-end pe-5" type="text" placeholder="{{ text_search }}">
+						<i class="fas fa-search position-absolute top-50 end-0 translate-middle-y fs-sm me-3"></i>
+					  </div>
+					  <ul class="widget-list widget-filter-list list-unstyled pt-1" style="max-height: 10rem;" data-simplebar="init" data-simplebar-auto-hide="false">
+						{% for category in categories %}
+						  <li class="widget-filter-item d-flex justify-content-between align-items-center mb-1">
+							<div class="form-check">
+							  <input class="form-check-input" type="checkbox" id="filter_category_{{category.category_id}}" name="filter_category" value="{{category.category_id}}">
+							  <label class="form-check-label widget-filter-item-text" for="filter_category_{{category.category_id}}">
+								&nbsp;&nbsp;{{category.name}}&nbsp;&nbsp;&nbsp;&nbsp;
+							  </label>
+							</div>
+						  </li>
+						{% endfor %}
+					  </ul>			    
+					</div>
+				</div>
+				<div class="col-sm-3">
+				    <div class="widget widget-filter mb-3 pb-1 border-bottom">
+					  <h3 class="widget-title">{{ entry_manufacturer }}</h3>
+					  <div class="input-group input-group-sm mb-2">
+						<input class="widget-filter-search form-control rounded-end pe-5" type="text" placeholder="{{ text_search }}">
+						<i class="fas fa-search position-absolute top-50 end-0 translate-middle-y fs-sm me-3"></i>
+					  </div>
+					  <ul class="widget-list widget-filter-list list-unstyled pt-1" style="max-height: 10rem;" data-simplebar="init" data-simplebar-auto-hide="false">
+						{% for manufacturer in manufacturers %}
+						  <li class="widget-filter-item d-flex justify-content-between align-items-center mb-1">
+							<div class="form-check">
+							  <input class="form-check-input" type="checkbox" id="filter_manufacturer_{{manufacturer.manufacturer_id}}" name="filter_manufacturer" value="{{ manufacturer.manufacturer_id }}">
+							  <label class="form-check-label widget-filter-item-text" for="filter_manufacturer_{{manufacturer.manufacturer_id}}">
+								&nbsp;&nbsp;{{manufacturer.name}}&nbsp;&nbsp;&nbsp;&nbsp;
+							  </label>
+							</div>
+						  </li>
+						{% endfor %}
+					  </ul>			    
+					</div>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-sm-12">
+				  <div class="text-end">
+					<button type="button" id="button-filter" class="btn btn-info"><i class="fas fa-filter"></i> {{ button_filter }}</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	  <div class="row row-flex mb-3">
+	    <div class="col-sm-7">
+		  <div class="card">
+			<div class="card-header"><i class="fas fa-shopping-cart"></i> {{ text_product }}</div>
+			<div id="product" class="card-body px-0">{{ list }}</div>
+		  </div>
+		</div>
+		<div class="col-sm-5">
+		  <div class="card" style="height: 100%;" id="card-select">
+			<div class="card-header"><i class="fas fa-list"></i> {{ text_product_ok }} <a href="{{ clear }}" data-bs-toggle="tooltip" title="{{ button_clear }}" id="clearSelect" class="btn btn-sm btn-warning" style="float: right; margin: 0;"><i class="fas fa-eraser"></i>{{ buttom_clear }}</a></div>
+			<div class="card-body px-0">
+			  <div class="scroll" style="height: 698px;">
+			  <table class="table table-hover" id="select-products">
+			    <tbody>
+			    {% set key_row = 0 %}
+				{% for product in selects %}
+				<tr id="select-row-{{ key_row }}">
+				  <td class="text-start"><img src="{{ product.image }}" class="img-thumbnail"/></td>
+				  <td class="text-start">{% if product.shotname %}<span class="fs-12" data-bs-toggle="tooltip" title="{{ product.name }}">{{ product.shotname }}</span>{% else %}<span class="fs-12">{{ product.name }}</span>{% endif %}</td>
+				  <td class="text-start"><div class="input-group" style="width: 93px;"><input type="number" class="form-control px-1" value="{{ product.quantity }}" data-quantity="{{ key_row }}" data-product="{{ product.product_id }}" aria-describedby="basic-quantity"><span class="input-group-text" id="basic-quantity">шт</span></div></td>
+				  <td class="text-end"><a href="{{ product.delete }}" data-bs-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger btn-sm"><i class="fas fa-minus-circle"></i></a>
+				  </td>
+				</tr>
+				{% set key_row = key_row + 1 %}
+				{% endfor %}
+				</tbody>
+			  </table>
+			  </div>
+			</div>
+			<div class="card-footer">
+			  <div class="d-flex justify-content-between">
+			    <select class="form-select" id="select-print" style="width:150px">
+				  <option value="none">{{ text_select_print }}</option>
+				  <optgroup label="{{ text_a4 }}">
+				    <option value="sp40_29">40х29</option>
+				    <option value="sp40_28">40х28</option>
+					<option value="sp50_50">50х50</option>
+					<option value="sp60_40">60х40</option>
+					<option value="sp140_60">140х60</option>
+				  </optgroup>
+				  <optgroup label="{{ text_termo }}">
+				    <option value="st43_25">43х25 мм</option>
+				    <option value="st30_20">30х20 мм</option>
+				    <option value="st58_40">58х40 мм</option>
+				  </optgroup>
+			    </select>
+				<button type="button" class="btn btn-primary" id="pre-print">{{ button_print }}</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="barcode" tabindex="-1" aria-labelledby="barcodeLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="barcodeLabel">{{ heading_modal }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ text_close }}</button>
+        <button type="button" class="btn btn-primary" id="save-barcode" data-href="">{{ button_save }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="ModalPrint" tabindex="-1" aria-labelledby="ModalPrintLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalPrintLabel">{{ heading_print }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ text_close }}</button>
+        <button type="button" class="btn btn-primary" id="callPrint">{{ button_print }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	'use strict'
+	var t,r,n,a,o,l,e;
+	null!=(r=document.querySelector(".navbar-sticky"))&&(r.classList,t=r.offsetHeight,window.addEventListener("scroll",function(e){r.classList.contains("position-absolute")?500<e.currentTarget.pageYOffset?r.classList.add("navbar-stuck"):r.classList.remove("navbar-stuck"):500<e.currentTarget.pageYOffset?(document.body.style.paddingTop=t+"px",r.classList.add("navbar-stuck")):(document.body.style.paddingTop="",r.classList.remove("navbar-stuck"))})),
+	e=document.querySelector(".navbar-stuck-toggler"),
+	n=document.querySelector(".navbar-stuck-menu"),
+	null!=e&&e.addEventListener("click",function(e){n.classList.toggle("show"),e.preventDefault()}),
+	function(){for(var t=document.querySelectorAll(".widget-filter"),e=0;e<t.length;e++)(function(e){var r=t[e].querySelector(".widget-filter-search"),n=t[e].querySelector(".widget-filter-list").querySelectorAll(".widget-filter-item");if(!r)return;r.addEventListener("keyup",function(){for(var e=r.value.toLowerCase(),t=0;t<n.length;t++)-1<n[t].querySelector(".widget-filter-item-text").innerHTML.toLowerCase().indexOf(e)?n[t].classList.remove("d-none"):n[t].classList.add("d-none")})})(e)}(),
+	e=document.querySelector("[data-filter-trigger]"),
+	l=document.querySelectorAll("[data-filter-target]"),
+	null!==e&&e.addEventListener("change",function(){var e=this.options[this.selectedIndex].value.toLowerCase();if("all"===e)for(var t=0;t<l.length;t++)l[t].classList.remove("d-none");else{for(var r=0;r<l.length;r++)l[r].classList.add("d-none");document.querySelector("#"+e).classList.remove("d-none")}})
+});
+</script>
+<script type="text/JavaScript" src="view/javascript/jquery/jquery.print.js"></script>
+<script type="text/javascript"><!--
+
+$('#callPrint').on('click', function(e) {
+	$("#exitPrint").print({
+        	globalStyles : false,
+        	mediaPrint: false,
+        	stylesheet: ['https://yoexpress.ru/admin/view/stylesheet/print.css','https://yoexpress.ru/admin/view/stylesheet/bootstrap.css'],
+        	iframe: true,
+        	append: null,
+        	prepend: null,
+        	manuallyCopyFormValues: true,
+        	deferred: $.Deferred(),
+        	timeout: 750,
+        	title: null,
+        	doctype: '<!doctype html>'
+	});
+});
+//--></script>
+<script type="text/javascript"><!--
+$(document).ready(function() {
+  var myPrint = new bootstrap.Modal(document.getElementById('ModalPrint'));
+  $(document).on('click', '#pre-print', function(e) {
+    e.preventDefault();
+	var size = $('#select-print option:selected').val();
+	
+	if (size === 'none') {
+		$('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> {{ error_size }} <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+	}else{	
+      $('#ModalPrint .modal-body').load('index.php?route=catalog/streak/print&user_token={{ user_token }}&size=' + size,
+		function() {
+		  myPrint.show();
+	  });
+	}
+  });  
+});
+//--></script>
+<script type="text/javascript"><!--
+$(document).ready(function() {
+
+	var myModal = new bootstrap.Modal(document.getElementById('barcode'));
+	
+	$(document).delegate('[data-barcode]', 'click', function(e) {
+	  e.preventDefault();
+	  
+	  var product_id = $(this).attr('data-barcode');
+	  var href = $(this).attr('data-href');  
+	  
+	  $('#barcode .modal-body').load('index.php?route=catalog/streak/EditBbarcode&user_token={{ user_token }}&product_id=' + product_id,
+	  function() {
+	    $('#save-barcode').attr('data-href', href);
+		myModal.show();
+		
+	  });
+	  
+	});
+	
+	$(document).on('click', '#save-barcode', function(e) {
+	  var href = $(this).attr('data-href');
+	  
+	  $.ajax({
+        url: 'index.php?route=catalog/streak/saveBarcode&user_token={{ user_token }}',
+        type: 'post',
+        data: $('#edit-barcode :input'),
+        dataType: 'json',
+        beforeSend: function() {
+        	$('#save-barcode').button('loading');
+		},
+        complete: function() {
+            $('#save-barcode').button('reset');
+        },
+        success: function(json) {
+			
+           
+			
+            if (typeof json['error'] == 'string') {
+				$('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+			}
+			
+			if (typeof json['error'] == 'object') {
+
+                for (key in json['error']) {
+                    $('#input-' + key.replaceAll('_', '-')).addClass('is-invalid').find('.form-control, .form-select, .form-check-input, .form-check-label').addClass('is-invalid');
+                    $('#error-' + key.replaceAll('_', '-')).html(json['error'][key]).addClass('d-block');
+                }
+            }
+			
+			if (json['success']){
+				$('#alert').prepend('<div class="alert alert-success alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + json['success'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+				
+				$('#product').load(href);
+				
+				myModal.hide();
+			}
+			alert(JSON.stringify(json));
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+      });
+	});
+});
+
+
+$(document).delegate('[data-select]', 'click', function(e) {
+  e.preventDefault();
+  var product_id = $(this).attr('data-select');
+  var key_row = {{ key_row }};
+  $.ajax({
+	url: 'index.php?route=catalog/streak/select&user_token={{ user_token }}&product_id=' + product_id,
+	dataType: 'json',
+	beforeSend: function() {
+		$('#card-select').addClass('loading');
+	},
+	complete: function() {
+		$('#card-select').removeClass('loading');
+	},
+	success: function (json) {
+		if (json['product']) {
+		  var html;
+			for (key in json['product']) {
+			  html += '<tr id="select-row-' + key_row + '">';
+			  html += '<td class="text-start"><img src="' + json['product'][key]['image'] + '" class="img-thumbnail"/></td>';
+			  html += '<td class="text-start"><span class="fs-12">' + json['product'][key]['name'] + '</span></td>';
+			  html += '<td class="text-start"><div class="input-group" style="width: 93px;"><input type="number" class="form-control px-1" value="' + json['product'][key]['quantity'] + '" data-quantity="' + key_row + '" data-product="' + json['product'][key]['product_id'] + '" aria-describedby="basic-quantity"><span class="input-group-text" id="basic-quantity">шт</span></div></td>';
+			  html += '<td class="text-end"><a href="' + json['product'][key]['delete'] + '" data-bs-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger btn-sm"><i class="fas fa-minus-circle"></i></a></td>';
+			  html += '</tr>';
+			  
+			  key_row++;
+			}
+			$('#select-products tbody').append(html);
+		}
+		
+		if (typeof json['error'] == 'string') {
+			$('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+		}
+	}
+  });
+});
+
+$('[data-quantity]').change('input', function () {
+  var value = $(this).val();
+  var product_id = $(this).attr('data-product');
+  $.ajax({
+	url: 'index.php?route=catalog/streak/quantity&user_token={{ user_token }}&product_id=' + product_id +'&quantity=' + value,
+	dataType: 'json',
+	beforeSend: function() {
+		$('#card-select').addClass('loading');
+	},
+	complete: function() {
+		$('#card-select').removeClass('loading');
+	},
+	success: function (json) {
+		if (json['quantity'] == value) {
+		  $('#alert').prepend('<div class="alert alert-success alert-dismissible"><i class="fas fa-exclamation-circle"></i> {{ alert_quantity }} <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+		}
+		if (typeof json['error'] == 'string') {
+			$('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+		}
+	}
+  });  
+});
+//--></script>
+
+<script type="text/javascript"><!--
+$('#product').on('click', 'thead a, .pagination a', function (e) {
+    e.preventDefault();
+
+    $('#product').load(this.href);
+});
+$('#select-products').on('click', 'tbody a', function (e) {
+    e.preventDefault();
+
+    $('#select-products tbody').load(this.href);
+});
+$('#clearSelect').on('click', function (e) {
+    e.preventDefault();
+    $('#select-products tbody').load(this.href);
+});
+
+//--></script>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function () {
+    var url = '';
+	
+	var filter_product_id = $('input[name=\'filter_product_id\']').val();
+	if (filter_product_id) {
+		url += '&filter_product_id=' + encodeURIComponent(filter_product_id);
+	}
+	var filter_sku = $('input[name=\'filter_sku\']').val();
+	if (filter_sku) {
+		url += '&filter_sku=' + encodeURIComponent(filter_sku);
+	}
+	var filter_mpn = $('input[name=\'filter_mpn\']').val();
+	if (filter_mpn) {
+		url += '&filter_mpn=' + encodeURIComponent(filter_mpn);
+	}
+	var filter_manufacturer = filter_category = [];
+	
+	$('input[name=\'filter_manufacturer\']:checked').each(function(){filter_manufacturer.push($(this).val());});
+	if (filter_manufacturer !== null) {
+	   url += '&filter_manufacturer=' + encodeURIComponent(filter_manufacturer);
+	}
+	
+	$('input[name=\'filter_category\']:checked').each(function(){filter_category.push($(this).val());});
+	if (filter_category !== null) {
+		url += '&filter_category=' + encodeURIComponent(filter_category);
+	}		
+
+    var filter_name = $('#input-name').val();
+
+    if (filter_name) {
+        url += '&filter_name=' + encodeURIComponent(filter_name);
+    }
+
+    var filter_show = $('#input-show').val();
+
+    if (filter_show !== '') {
+        url += '&filter_show=' + filter_show;
+    }
+
+    $('#product').load('index.php?route=catalog/streak/listProduct&user_token={{ user_token }}' + url);
+});
+
+$('#input-name').autocomplete({
+    'source': function (request, response) {
+        $.ajax({
+            url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+            dataType: 'json',
+            success: function (json) {
+                response($.map(json, function (item) {
+                    return {
+                        label: item['name'],
+                        value: item['product_id']
+                    }
+                }));
+            }
+        });
+    },
+    'select': function (item) {
+
+    }
+});
+
+$('input[name=\'filter_product_id\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_product_id=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['product_id'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_product_id\']').val(item['label']);
+	}
+});
+
+$('input[name=\'filter_sku\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_sku=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					if (item['sku']) {
+						return {
+							label: item['sku'],
+							value: item['product_id']
+						}
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_sku\']').val(item['label']);
+	}
+});
+
+$('input[name=\'filter_mpn\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_mpn=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					if (item['mpn']) {
+						return {
+							label: item['mpn'],
+							value: item['product_id']
+						}
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_mpn\']').val(item['label']);
+	}
+});
+
+		
+//--></script>
+{{ footer }}

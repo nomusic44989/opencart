@@ -1,0 +1,10 @@
+{% set key_row = 0 %}
+{% for product in selects %}
+<tr id="select-row-{{ key_row }}">
+  <td class="text-start"><img src="{{ product.image }}" class="img-thumbnail"/></td>
+  <td class="text-start"><span class="fs-12">{{ product.name }}</span></td>
+  <td class="text-start"><div class="input-group" style="width: 93px;"><input type="number" class="form-control" value="{{ product.quantity }}" aria-describedby="basic-quantity"><span class="input-group-text" id="basic-quantity">шт</span></div></td>
+  <td class="text-end"><button type="button" onclick="$(\'#select-row-{{ key_row }}\').remove();" data-bs-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger btn-sm"><i class="fas fa-minus-circle"></i></button></td>
+</tr>
+{% set key_row = key_row + 1 %}
+{% endfor %}

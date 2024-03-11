@@ -1,0 +1,51 @@
+<form id="form-product" method="post" data-oc-toggle="ajax" data-oc-load="{{ action }}" data-oc-target="#product">
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead class="bg-dark text-white" style="height: 3rem;">
+			  <tr>
+				<td class="text-center" style="width: 1px;"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', $(this).prop('checked'));" class="form-check-input"/></td>
+				<td class="text-center">{{ column_image }}</td>
+				<td class="text-start"><a href="{{ sort_name }}"{% if sort == 'pd.name' %} class="{{ order|lower }}"{% endif %}>{{ column_name }}</a></td>
+				<td class="text-center">{{ column_sku }}</td>
+			  </tr>
+			</thead>
+			<tbody>
+			  {% if products %}
+				{% for product in products %}
+					<tr class="select_streak">
+						<td class="text-center"><input type="checkbox" name="selected[]" value="{{ product.product_id }}" class="form-check-input"/></td>
+						<td class="text-center"><img src="{{ product.image }}" alt="{{ product.name }}" class="img-thumbnail"/></td>
+						<td class="text-start"><a href="{{ product.edit }}" data-bs-toggle="tooltip" title="{{ text_edit }}"  target="_blank">{{ product.name }}</a>
+							<br/>
+							{% if product.status %}
+								<small class="text-success">{{ text_enabled }}</small>
+							{% else %}
+								<small class="text-danger">{{ text_disabled }}</small>
+							{% endif %}</td>
+						<td class="text-center">
+						    <div class="sku_block">
+							{% if product.sku %}<p class="mb-1" data-bs-toggle="tooltip" title="{{ text_sku }}">{{ product.sku }}</p>{% endif %}
+							{% if product.mpn %}<p class="mb-0" data-bs-toggle="tooltip" title="{{ text_mpn }}"><strong>{{ product.mpn }}</strong></p>{% endif %}
+						    </div>
+							<div class="sku_hover">
+							  <a href="#" data-select="{{ product.product_id }}" class="btn btn-primary">{{ buttom_selects }}</a>
+							  <a href="#" data-barcode="{{ product.product_id }}" data-href="{{ product.barcode }}" class="btn btn-primary px-1" ><i class="fa-solid fa-barcode"></i></a>
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
+			  {% else %}
+				<tr>
+				  <td class="text-center" colspan="4">{{ text_no_results }}</td>
+				</tr>
+			  {% endif %}
+			</tbody>
+		</table>
+	</div>
+	<div class="px-3">
+	  <div class="row">
+		<div class="col-sm-6 text-start">{{ pagination }}</div>
+		<div class="col-sm-6 text-end">{{ results }}</div>
+	  </div>
+	</div>
+</form>

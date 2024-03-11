@@ -1,0 +1,33 @@
+<div class="d-flex flex-column justify-content-between h-100">
+    <div class="caption">
+      <div class="d-flex justify-content-between">
+          <p class="category mb-0">{{ categoris }}</p>
+          {% if manufacture %}<p class="manufacture mb-0 fw-bold">{{ manufacture }}</p>[{% endif %}
+      </div>
+      <div class="firma_name">{{ firma_name }}</div>
+      <div class="d-flex justify-content-between overflow-hidden">
+        <span class="product_name mt-1">{{ name }}</span>
+      </div>
+    </div>
+    <div class="price_block">
+      <div class="d-flex justify-content-between text-dark">
+        <div class="firma_price d-flex flex-column align-content-center"><span>{{ firma_price }}</span><span>{{ firma_coin }}</span></div>
+        <div class="price_new">
+          <span class="int">{{ price }}</span>
+          <div class="cell">
+            <span class="kopecks">{% if mprice == '0' %}00{% else %}{{ mprice }}{% endif %}</span>
+            <span class="currency">{{ firma_currency }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="barcode">
+      <div class="screen w-100">		  
+        <img src="{{ imagecode }}" class="w-100 px-1">
+        <div class="d-flex justify-content-between">
+          <p class="firma mb-0">{{ firma_firma }}</p>
+          <p class="cod mb-0 fw-bold">{{ barcode }}</p>
+        </div>
+      </div>
+    </div>
+  </div>

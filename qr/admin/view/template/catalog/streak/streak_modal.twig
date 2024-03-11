@@ -1,0 +1,56 @@
+<div id="edit-barcode">
+    <div class="mb-3">
+      <label class="col-form-label" for="input-product">{{ entry_product }}</label>
+      <div>
+        <input type="text" name="name" value="{{ products.name }}" id="input-product" class="form-control" disabled readonly/>
+        <input type="hidden" name="product_id" value="{{ products.product_id }}"/>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="col-form-label" for="input-product-shotname">{{ entry_short_name }}</label>
+      {% for language in languages %}
+      <div class="input-group">
+        <input type="text" name="product_description[{{ language.language_id }}][shotname]" value="{{ product_description[language.language_id] ? product_description[language.language_id].shotname }}" id="input-product-shotname" class="form-control"/>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="mb-3">
+      <label class="col-form-label" for="input-product-price">{{ entry_price }}</label>
+      <div class="input-group">
+        <input type="text" name="price" value="{{ products.price }}" id="input-product-price" class="form-control"/>
+        <div id="error-price" class="invalid-feedback"></div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="col-form-label" for="input-product-sku">{{ entry_sku }}</label>
+      <div class="input-group">
+        <input type="text" name="sku" value="{{ products.sku }}" id="input-product-sku" class="form-control"/>
+        <button type="button" class="btn btn-warning" id="generateManual">{{ buttom_generator }}</button>
+      </div>
+      <div id="error-sku" class="invalid-feedback"></div>
+    </div>
+    <div class="mb-3">
+      <label class="col-form-label" for="input-product-mpn">{{ entry_mpn }}</label>
+      <div>
+        <input type="text" name="mpn" value="{{ products.mpn }}" id="input-product-mpn" class="form-control"/>
+      </div>
+    </div>
+  </div>
+  
+  <script type="text/javascript">
+  $('#generateManual').click(function(event) {
+      $.ajax({
+        url: 'index.php?route=extension/module/sku_generator/getSkuByAjax&user_token={{ user_token }}',
+        dataType: 'json',
+        method : 'POST',
+        success: function( response, textStatus, jqXHR ){
+          if( response.result != '' ){
+            $('#input-product-sku').val(response.result);
+          }
+        },
+        error: function( jqXHR, textStatus, errorThrown ){
+          console.log('We have a problem with Ajax: ' + textStatus);
+        },
+      });
+  });
+  </script>

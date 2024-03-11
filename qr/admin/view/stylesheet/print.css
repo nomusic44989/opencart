@@ -1,0 +1,36 @@
+body{
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+  }
+  .print-body {width: 40mm;height: 25mm;}
+  .print-body .title {font-size: 8px;display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;}
+  .sku{display: flex;flex-direction: column;}
+  .sku p {text-align: center;letter-spacing: 4px;}
+  
+  .blockprinter {border: 1px solid;padding: 3px;overflow: hidden;}
+  .blockprinter.sp40_29 {width: 40mm;height: 29mm;}
+  .blockprinter.sp60_40 {width: 60mm;height: 40mm;}
+  .blockprinter.sp50_50 {width: 50mm;height: 50mm;}
+  
+  .category {FONT-WEIGHT: 700;font-family: monospace;}
+  .firma,.manufacture,.cod {font-family: monospace;}
+  .firma_name {background: #000;background-color: rgb(0 0 0);color: #fff;text-align: center;padding: 3px 0px;font-size: 11px;}
+  .caption {position: relative;font-family: system-ui;overflow: hidden;}
+  .firma_price {FONT-WEIGHT: 700;font-size: smaller;font-family: system-ui;}
+  
+  .blockprinter.sp50_50 .caption {height: 6rem;}
+  .blockprinter.sp50_50 .category,.blockprinter.sp50_50 .firma,.blockprinter.sp50_50 .manufacture,.blockprinter.sp50_50 .cod {font-size: 10px;}
+  .blockprinter.sp50_50 .caption .product_name{display: -webkit-box;text-align: left;-webkit-line-clamp: 4;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;font-size: 10px;font-weight: bold;}
+  .blockprinter.sp50_50 .caption .qr {width: 70px;object-fit: contain;margin: -10px;padding-top: 2px;}
+  .blockprinter.sp50_50 .caption .qr img {object-fit: contain;/* margin-top: -1px; *//* margin-bottom: -3px; */width: 104%;height: 100%;}
+  
+  .blockprinter.sp50_50 .price_block {border-top: 2px solid;border-bottom: 2px solid;border-color: #000;}
+  .blockprinter.sp50_50 .price_block .price_new {font-family: sans-serif;padding-left: 10px;display: flex;justify-content: flex-end;}
+  .blockprinter.sp50_50 .price_block .int {font-size: 22px;FONT-WEIGHT: 700;transform: scale(1, 1.5);padding-top: 2px;}
+  .blockprinter.sp50_50 .price_block .cell {display: flex;flex-direction: column;justify-content: flex-start;align-items: flex-start;margin-left: 5px;}
+  .blockprinter.sp50_50 .price_block .kopecks {border-bottom: 1px solid;font-size: 12px;FONT-WEIGHT: 700;transform: scale(1, 1.25);overflow: hidden;height: 16px;}
+  .blockprinter.sp50_50 .price_block .currency{font-size: smaller;}

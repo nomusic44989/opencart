@@ -1,0 +1,35 @@
+<div class="caption">
+	<div class="d-flex-between">
+		<span class="date">{{ date }}</span>
+		<p class="firma">{{ firma_firma }}</p>
+	</div>
+	<div class="product_category">{{ categoris.name }}</div>
+	<div class="firma_name">{{ firma_name }}</div>
+	<span class="product_name text-center">{{ name }}</span>
+	<span class="product_desc">{% if description %}{{ description }}{% endif %}	</span>	
+</div>
+<div class="desc">
+  <ul>
+    {% for descs in desc %}
+    {% if descs.name %}<li>{{ descs.name }}</li>{% endif %}
+	{% endfor %}
+  </ul>
+</div>
+<div class="price_block">
+	<div class="d-flex-price">
+	  <div class="firma_price"><span>{{ firma_price }}</span><span>{{ firma_coin }}</span></div>
+	  <div class="price_new">
+		<span class="int">{{ price }}</span>
+		<div class="cell">
+		  <span class="kopecks">{% if mprice == '0' %}00{% else %}{{ mprice }}{% endif %}</span>
+		  <span class="currency">{{ firma_currency }}</span>
+		</div>
+	  </div>
+	</div>
+</div>
+<div class="barcode">
+	<div class="screen w-100">		  
+	  <img src="{{ imagecode }}">
+	  <span class="cod">{{ barcode }}</span>
+	</div>
+</div>
