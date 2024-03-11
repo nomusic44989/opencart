@@ -1,0 +1,25 @@
+<form id="form-gallery" method="post" data-oc-load="{{ action }}" data-oc-target="#gallery">
+    <div class="row gallery">
+      {% if gallerys %}
+        {% for gallery in gallerys %}
+        <div class="col-sm-4">
+          <figure id="{{ gallery.gallery_id }}" class="gallery-item mb-4">
+            <img src="{{ gallery.image }}" alt="{{ gallery.name }}" title="{{ gallery.name }}" class="gallery-image {% if gallery.image_after %}w-50 mt-4 mb-4{% else %}w-100{% endif %}">
+            {% if gallery.image_after %}<img src="{{ gallery.image_after }}" alt="{{ gallery.name }}" title="{{ gallery.name }}" class="gallery-image-after w-50 mt-4 mb-4">{% endif %}
+            <figcaption>{{ gallery.name }}</figcaption>
+            <span class="gallery-team">{{ gallery.team }}</span>		  
+            <div class="gallery-top">
+              <input type="checkbox" name="selected[]" value="{{ gallery.gallery_id }}" class="form-check-input gallery-check" data-bs-toggle="tooltip" title="Выделить"/>
+            </div>
+            <div class="gallery-bottom">
+              <a href="{{ gallery.edit }}" data-bs-toggle="tooltip" title="{{ button_edit }}" class="gallery-btn"><i class="fas fa-pencil-alt"></i> {{ button_edit }}</a>
+              <a href="{{ gallery.delete }}" data-bs-toggle="tooltip" title="{{ button_delete }}" class="gallery-btn text-danger"><i class="fa-regular fa-trash-can"></i> {{ button_delete }}</a>
+            </div>
+          </figure>
+        </div>
+        {% endfor %}
+      {% else %}
+        {{ text_no_results }}
+      {% endif %}
+    </div>
+  </form>

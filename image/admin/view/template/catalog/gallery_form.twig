@@ -1,0 +1,158 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="float-end">
+        <button type="submit" form="form-gallery" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primari"><i class="fa-solid fa-floppy-disk"></i></button>
+        <a href="{{ back }}" data-bs-toggle="tooltip" title="{{ button_back }}" class="btn btn-light"><i class="fa-solid fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ol class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header"><i class="fa-solid fa-pencil"></i> {{ text_form }}</div>
+      <div class="card-body">
+        <form id="form-gallery" action="{{ save }}" method="post" data-oc-toggle="ajax">
+          <fieldset>
+            <legend>{{ text_section }}</legend>
+            <div class="row mb-3 required">
+              <label class="col-sm-2 col-form-label">{{ entry_name }}</label>
+              <div class="col-sm-10">
+                {% for language in languages %}
+                  <div class="input-group">
+                    <div class="input-group-text"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/></div>
+                    <input type="text" name="gallery_description[{{ language.language_id }}][name]" value="{{ gallery_description[language.language_id] ? gallery_description[language.language_id].name }}" placeholder="{{ entry_name }}" id="input-group-{{ language.language_id }}" class="form-control"/>
+                  </div>
+                  <div id="error-name-{{ language.language_id }}" class="invalid-feedback"></div>
+                {% endfor %}
+              </div>
+            </div>
+			<div class="row mb-3">
+              <label class="col-sm-2 col-form-label">{{ entry_description }}</label>
+              <div class="col-sm-10">
+                {% for language in languages %}
+                  <div class="input-group">
+                    <div class="input-group-text"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}"/></div>
+                    <textarea type="text" name="gallery_description[{{ language.language_id }}][description]" placeholder="{{ entry_description }}" id="input-group-{{ language.language_id }}" class="form-control" row="4">{{ gallery_description[language.language_id] ? gallery_description[language.language_id].description }}</textarea>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+			<div class="row mb-3 required">
+			  <label class="col-sm-2 col-form-label">{{ entry_team }}</label>
+			  <div class="col-sm-10">
+			    <input type="text" name="team" value="{{ team }}" placeholder="{{ entry_team }}" id="input-team" list="list-team" class="form-control"/>
+                <input type="hidden" name="team_id" value="{{ team_id }}" id="input-team-id"/>
+                <datalist id="list-team"></datalist>
+                <div class="form-text">{{ help_team }}</div>
+                <div id="error-team" class="invalid-feedback"></div>
+			  </div>
+			</div>
+			<div class="row mb-3">
+			  <label class="col-sm-2 col-form-label">{{ entry_category }}</label>
+			  <div class="col-sm-10">
+                <input type="text" name="category" value="" placeholder="{{ entry_category }}" id="input-category" list="list-category" class="form-control"/>
+                <datalist id="list-category"></datalist>
+                <div class="input-group">
+                  <div class="form-control p-0" style="height: 150px; overflow: auto;">
+                    <table id="gallery-category" class="table table-sm m-0">
+                      <tbody>
+                        {% for gallery_category in gallery_categories %}
+                          <tr id="gallery-category-{{ product_category.category_id }}">
+                            <td>{{ gallery_category.name }}<input type="hidden" name="gallery_category[]" value="{{ gallery_category.category_id }}"/></td>
+                            <td class="text-end"><button type="button" class="btn btn-danger btn-sm"><i class="fas fa-minus-circle"></i></button></td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="form-text">{{ help_category }}</div>
+              </div>
+			</div>
+			<div class="row mb-3">
+			  <label class="col-sm-2 col-form-label">{{ entry_status }}</label>
+              <div class="col-sm-4">
+                <div>
+                  <div class="btn-group">
+                    <input type="radio" name="status" value="1" id="input-status-yes" class="btn-check"{% if status %} checked{% endif %}/> <label for="input-status-yes" class="btn btn-outline-secondary">{{ text_yes }}</label> <input type="radio" name="status" value="0" id="input-status-no" class="btn-check"{% if not status %} checked{% endif %}/> <label for="input-status-no" class="btn btn-outline-secondary">{{ text_no }}</label>
+                  </div>
+                </div>
+			  </div>
+			  <label for="input-sort-order" class="col-sm-2 col-form-label">{{ entry_sort_order }}</label>
+			  <div class="col-sm-4">
+                <input type="text" name="sort_order" value="{{ sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control"/>
+			  </div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>{{ text_images }}</legend>
+            <div class="row mb-3">
+			  <label class="col-sm-2 col-form-label">{{ entry_image }}</label>
+			  <div class="col-sm-4">
+                <div class="card image">
+                  <img src="{{ thumb }}" alt="" title="" id="thumb-image" data-oc-placeholder="{{ placeholder }}" class="card-img-top"/>
+				  <input type="hidden" name="image" value="{{ image }}" id="input-image"/>
+                  <div class="card-body">
+                    <button type="button" data-oc-toggle="image" data-oc-target="#input-image" data-oc-thumb="#thumb-image" class="btn btn-primary btn-sm btn-block"><i class="fa-solid fa-pencil"></i> {{ button_edit }}</button>
+                    <button type="button" data-oc-toggle="clear" data-oc-target="#input-image" data-oc-thumb="#thumb-image" class="btn btn-warning btn-sm btn-block"><i class="fa-regular fa-trash-can"></i> {{ button_clear }}</button>
+                  </div>
+                </div>
+              </div>
+			  <label class="col-sm-2 col-form-label">{{ entry_image_after }}</label>
+			  <div class="col-sm-4">
+                <div class="card image">
+                  <img src="{{ thumb_after }}" alt="" title="" id="thumb-image-after" data-oc-placeholder="{{ placeholder }}" class="card-img-top"/>
+				  <input type="hidden" name="image_after" value="{{ image_after }}" id="input-image-after"/>
+                  <div class="card-body">
+                    <button type="button" data-oc-toggle="image" data-oc-target="#input-image-after" data-oc-thumb="#thumb-image-after" class="btn btn-primary btn-sm btn-block"><i class="fa-solid fa-pencil"></i> {{ button_edit }}</button>
+                    <button type="button" data-oc-toggle="clear" data-oc-target="#input-image-after" data-oc-thumb="#thumb-image-after" class="btn btn-warning btn-sm btn-block"><i class="fa-regular fa-trash-can"></i> {{ button_clear }}</button>
+                  </div>
+				  <div id="error-team" class="invalid-feedback"></div>
+                </div>
+              </div>
+			  <div class="col-sm-2"></div>
+			  <div class="col-sm-10 pt-3">
+			    <div class="alert alert-info" role="alert"><strong>{{ alert_image }}</strong></div>
+			  </div>
+			</div>
+          </fieldset>
+          <input type="hidden" name="gallery_id" value="{{ gallery_id }}" id="input-gallery-id"/>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('#input-team').autocomplete({
+    'source': function(request, response) {
+        $.ajax({
+            url: 'index.php?route=catalog/team/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+            dataType: 'json',
+            success: function(json) {
+                json.unshift({
+                    name: '{{ text_none }}',
+                    team_id: 0
+                });
+
+                response($.map(json, function(item) {
+                    return {
+                        label: item['name'],
+                        value: item['team_id']
+                    }
+                }));
+            }
+        });
+    },
+    'select': function(item) {
+		$('#input-team').val(item['label']);
+        $('#input-team-id').val(item['value']);
+    }
+});
+</script>
+{{ footer }}

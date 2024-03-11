@@ -1,0 +1,44 @@
+{{ header }}
+<section class="section team" id="information-team">
+  <div class="container">
+	<div class="container">	  
+	  <div class="row text-center mt-2 justify-content-center">
+		<div class="col-12">
+		  <div class="row justify-content-center">
+			<div class="col-12 col-md-5 mt-2">
+			  <div class="team__image"><img src="{{ photo }}" class="img-fluid" alt="{{ text_master }} {{ name }} - {{ post }}"/></div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	  <div class="row justify-content-center">
+		<div class="col">
+		  <h1 class="section__title text-center mt-4 mb-2 pb-2 display-5">{{ heading_title }}</h1>
+		  <p class="section__subtitle text-center fs-4 mb-3">{{ post }}</p>
+		</div>
+	  </div>
+	  <div class="row justify-content-center mt-5 mt-md-4">
+	    <div class="col-md-10 text-center">
+		  Описание
+		</div>
+	  </div>
+	  <div class="row justify-content-center mt-5 mt-md-4">
+	    <div class="col-md-10">
+		  <h2 class="section__title text-center mt-4 mb-2 pb-2 fs-1">{{ text_gallery }}</h2>
+		</div>
+		<div class="col-12">
+		  <div class="row team__gallery gallery" data-masonry="{&quot;percentPosition&quot;: true }" id="gallery">
+			{% for gallery in gallerys %}
+			<div class="col-sm-6 col-lg-4 mb-4">
+                {{ gallery }}
+			</div>
+            {% endfor %}		  
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+</section>
+{{ content_top }}
+{{ content_bottom }}
+{{ footer }}

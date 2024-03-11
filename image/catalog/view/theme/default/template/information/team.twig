@@ -1,0 +1,48 @@
+{{ header }}
+{{ content_top }}
+<section class="section teams" id="information-teams">
+  <div class="container py-3">
+	<div class="container">
+	  <div class="row justify-content-center">
+		<div class="col">
+		  <h1 class="section__title text-center mb-lg-4 mb-5 pb-3">{{ heading_title }}</h1>
+		</div>
+	  </div>
+	  <div class="row text-center mt-2 mt-lg-4 justify-content-center">
+	    <div class="col-md-1"></div>
+		{% for team in teams %}
+		<div class="col-12 col-md-3 mb-5 teams__item">
+		  <a href="{{ team.href }}" class="teams__link">
+			<div class="teams__image"><img src="{{ team.image }}" class="img-fluid" alt="{{ text_master }} {{ team.name }} - {{ team.post }}" /></div>
+			<p class="teams__name fs-2">{{ team.name }}</p>
+		  </a>
+		  <a href="{{ team.only }}" class="btn teams__btn mt-3">{{ text_only }}</a>
+		</div>
+		<div class="col-md-1"></div>
+		{% endfor %}
+	  </div>
+	  <div class="row justify-content-center">
+	    <div class="col-md-10 col-lg-8 mt-5 mt-md-4">
+		  <img src="{{ main_image }}" class="teams__photo" alt="{{ text_main_image }}">
+		</div>
+	  </div>
+	  <div class="row justify-content-center mt-5">
+	    <div class="col-12 col-md-6 py-4">
+		  <h2 class="section__title text-center mb-lg-2 mb-4 pb-3 fs-1">{{ text_signup }}</h2>
+		  <p class="section__subtitle text-center fs-5 mb-3">{{ text_sub_singup }}</p>
+		</div>
+		<div class="col-12 col-lg-10 text-center">
+		  <ul class="teams__signup signup">
+		    {% for btn in btns %}
+			<li class="signup__item">
+			  <a href="{{ btn.href }}" class="btn signup__btn {{ btn.class }}">{{ btn.name }}</a>
+			</li>
+			{% endfor %}
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+</section>
+{{ content_bottom }}
+{{ footer }}
